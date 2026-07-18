@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <remote name="github" fetch="https://github.com/" />
-
   <project name="Xiaomi-Spes-Devs/android_device_xiaomi_spes" path="device/xiaomi/spes" remote="github" revision="lineage-23.2" />
   <project name="Xiaomi-Spes-Devs/android_vendor_xiaomi_spes" path="vendor/xiaomi/spes" remote="github" revision="lineage-23.2" />
   <project name="Xiaomi-Spes-Devs/android_kernel_xiaomi_sm6225" path="kernel/xiaomi/sm6225" remote="github" revision="lineage-23.2" />
