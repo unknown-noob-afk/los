@@ -10,9 +10,7 @@ echo "=================="
 
 # Local manifest
 mkdir -p .repo/local_manifests
-git clone https://github.com/unknown-noob-afk/los.git .repo/local_manifests_tmp
-cp .repo/local_manifests_tmp/spes.xml .repo/local_manifests/
-rm -rf .repo/local_manifests_tmp
+git clone https://github.com/unknown-noob-afk/local_manifest_spes.git .repo/local_manifests
 echo "============================"
 echo "Local manifest clone success"
 echo "============================"
@@ -24,7 +22,7 @@ echo "Sync success"
 echo "============="
 
 # Export
-export BUILD_USERNAME=NooB
+export BUILD_USERNAME=NOOB
 export BUILD_HOSTNAME=crave
 export BUILD_BROKEN_MISSING_REQUIRED_MODULES=true
 echo "======= Export Done ======"
