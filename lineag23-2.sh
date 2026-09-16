@@ -24,11 +24,11 @@ exec 3>&1 4>&2
 exec 1> >(tee -a "$LOG_FILE") 2>&1
 
 # 📱 Telegram Notification Setup (OPTIONAL — fill in or leave blank to disable)
-TELEGRAM_TOKEN=""
-TELEGRAM_CHAT_ID=""
+TELEGRAM_TOKEN="8984418187:AAFDfoStPt-OpwKmm5U2vVSAwexfAeVKlqM"
+TELEGRAM_CHAT_ID="5683536051"
 
 # ☁️ Pixeldrain upload key (required for upload_and_notify + crash log upload)
-PIXELDRAIN_API_KEY="YOUR_OWN_KEY_HERE"
+PIXELDRAIN_API_KEY="04a5b1ba-3519-46ed-af20-d6904680fb94"
 # ==========================================
 
 set -eE
