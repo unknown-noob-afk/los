@@ -1,1 +1,1 @@
-crave run --no-patch -- "curl -v https://raw.githubusercontent.com/unknown-noob-afk/los/main/lineag23-2.sh | bash"
+curl -sL https://raw.githubusercontent.com/unknown-noob-afk/los/main/lineage23-2.sh | tr -d '\r' | bash -s spes 1
