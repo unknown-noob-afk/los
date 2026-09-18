@@ -149,25 +149,16 @@ sync_repositories() {
     # 1. Cleanup & Base Sync
     repo init -u "$REPO_INIT_URL" -b "$REPO_INIT_BRANCH" --git-lfs --depth=1
 
-    # Local manifest
-    rm -rf .repo/local_manifests/
-    if [ "$USE_LOCAL_MANIFEST" == "true" ]; then
-        echo "📄 Cloning local manifests..."
-        git clone --depth=1 -b "$LOCAL_MANIFEST_BRANCH" "$LOCAL_MANIFEST_REPO" .repo/local_manifests
-    else
-        echo "⏭️ Skipping local manifests (Not supported by $ROM_NAME)."
-    fi
-
     # Remove stale GCC prebuilts to prevent "Cannot remove project" repo sync errors
     rm -rf prebuilts/gcc 2>/dev/null || true
 
     if [ -f /opt/crave/resync.sh ]; then
         echo "🚀 Running Crave resync..."
-        /opt/crave/resync.sh
+        bash /opt/crave/resync.sh
     else
         echo "🚀 Running standard repo sync..."
         for i in {1..3}; do
-            repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all) && break || {
+            repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j$(nproc --all) && break || {
                 if [ $i -eq 3 ]; then
                     echo "❌ Repo sync failed after 3 attempts."
                     handle_error $LINENO
@@ -176,6 +167,35 @@ sync_repositories() {
                 sleep 30
             }
         done
+    fi
+
+    # 2. Manually clone device/vendor/kernel/hardware trees directly to their target paths
+    #    (bypasses local_manifests, which wasn't reliably syncing custom projects)
+    if [ "$USE_LOCAL_MANIFEST" == "true" ]; then
+        echo "📥 Cloning device/vendor/kernel/hardware trees directly..."
+
+        rm -rf device/xiaomi/spes
+        git clone --depth=1 -b sixteen-qpr2 https://github.com/unknown-noob-afk/android_device_xiaomi_spes.git device/xiaomi/spes
+
+        rm -rf vendor/xiaomi/spes
+        git clone --depth=1 -b sixteen-qpr2 https://github.com/unknown-noob-afk/vendor_spes.git vendor/xiaomi/spes
+
+        rm -rf kernel/xiaomi/spes
+        git clone --depth=1 -b sixteen-qpr2 https://github.com/unknown-noob-afk/android_kernel_xiaomi_spes.git kernel/xiaomi/spes
+
+        rm -rf hardware/xiaomi
+        git clone --depth=1 -b lineage-23.2 https://github.com/unknown-noob-afk/android_hardware_xiaomi.git hardware/xiaomi
+
+        # Sanity check — fail loudly if any tree didn't actually land
+        for TREE in device/xiaomi/spes vendor/xiaomi/spes kernel/xiaomi/spes hardware/xiaomi; do
+            if [ ! -d "$TREE" ] || [ -z "$(ls -A "$TREE" 2>/dev/null)" ]; then
+                echo "❌ $TREE failed to clone or is empty."
+                handle_error $LINENO
+            fi
+        done
+        echo "✅ All custom trees present."
+    else
+        echo "⏭️ Skipping custom tree clones (Not supported by $ROM_NAME)."
     fi
 
     # Manual Removals (if any defined)
