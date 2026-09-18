@@ -1,3 +1,4 @@
+# ==========================================
 #!/bin/bash
 
 # ==========================================
@@ -106,8 +107,8 @@ case "$DEVICE" in
                 USE_LOCAL_MANIFEST="true"
                 LOCAL_MANIFEST_REPO="https://github.com/unknown-noob-afk/los.git"
                 LOCAL_MANIFEST_BRANCH="main"
-                BUILD_TARGET="lineage_spes-userdebug"
-                BUILD_COMMAND="mka bacon"
+                BUILD_TARGET=""
+                BUILD_COMMAND="brunch spes userdebug"
                 ;;
 
             *)
